@@ -1,0 +1,7 @@
+#checkId($entity)
+Ext.define('${PROJECT_NAME}.store.gen.${entity.name}Gen', {
+    extend: '${PROJECT_NAME}.store.base.BaseStore',
+    model: '${PROJECT_NAME}.model.${entity.name}',
+    urlApiPath: '/${fn.toLowerCase(${entity.name})}s',
+    apiRootProperty: '${fn.toLowerCase(${entity.name})}s'
+});

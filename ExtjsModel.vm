@@ -1,0 +1,21 @@
+#checkId($entity)
+Ext.define('${PROJECT_NAME}.model.gen.${entity.name}Gen', {
+    extend: 'Ext.data.Model',
+    fields: [
+#foreach( $attribute in $entity.nonKeyAttributes )
+#set($jsType = ${attribute.neutralType})
+#if(${attribute.isNumberType()})
+    #set($jsType = 'int')
+#end
+        {
+            name: '${attribute.name}',
+            type: '${jsType}'
+        },
+#end
+        {
+            name: '${entity.keyAttribute.name}',
+            type: 'int'
+        }
+    ],
+    idProperty: '${entity.keyAttribute.name}'
+});

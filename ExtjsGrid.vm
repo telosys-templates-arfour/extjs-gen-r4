@@ -1,0 +1,23 @@
+#checkId($entity)
+Ext.define('${PROJECT_NAME}.view.grid.gen.${entity.name}Gen', {
+    extend: '${PROJECT_NAME}.view.grid.base.BaseGrid',
+    requires: ['${PROJECT_NAME}.store.${entity.name}'],
+    title: '${entity.name}s',
+    columns: [
+#foreach( $attribute in $entity.nonKeyAttributes )
+        {
+            text: '${attribute.label}',
+            dataIndex: '${attribute.name}',
+            editor: 'textfield'
+        },
+#end
+        {
+            dataIndex: '${entity.keyAttribute.name}',
+            text: 'id'
+        }
+    ],
+    store: {
+        type: '${fn.toLowerCase(${entity.name})}'
+    }
+});
+## https://stackoverflow.com/questions/32315463/extjs-add-item-to-extended-class
