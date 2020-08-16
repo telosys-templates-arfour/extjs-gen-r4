@@ -3,7 +3,6 @@ Ext.define('${PROJECT_NAME}.view.grid.tbar.gen.${entity.name}ComboGen', {
     extend: 'Ext.form.field.ComboBox',
     fieldLabel: '${entity.name} Filter',
     queryMode: 'remote',
-    displayField: 'name',
 #if(${entity.keyAttributesCount} == 1)
     valueField: '${entity.keyAttribute.name}',
 #else
