@@ -12,10 +12,28 @@ Ext.define('${PROJECT_NAME}.model.gen.${entity.name}Gen', {
             type: '${jsType}'
         },
 #end
+#if(${entity.keyAttributesCount} == 1)
         {
             name: '${entity.keyAttribute.name}',
             type: 'int'
         }
+#else
+        {
+            name: 'id${entity.name}',
+            type: 'int'
+        }
+    #foreach($field in ${entity.keyAttributes})
+        ,
+        {
+            name: '${field.name}',
+            type: 'id${field.name}'
+        }
+    #end
+#end
     ],
+#if(${entity.keyAttributesCount} == 1)
     idProperty: '${entity.keyAttribute.name}'
+#else
+    idProperty: 'id${entity.name}'
+#end
 });

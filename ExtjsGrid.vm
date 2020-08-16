@@ -11,10 +11,24 @@ Ext.define('${PROJECT_NAME}.view.grid.gen.${entity.name}Gen', {
             editor: 'textfield'
         },
 #end
+#if(${entity.keyAttributesCount} == 1)
         {
             dataIndex: '${entity.keyAttribute.name}',
             text: 'id'
         }
+#else
+        {
+            dataIndex: 'id${entity.name}',
+            text: 'id'
+        }
+    #foreach($field in ${entity.keyAttributes})
+        ,
+        {
+            dataIndex: '${field.name}',
+            text: 'id${field.name}'
+        }
+    #end
+#end
     ],
     store: {
         type: '${fn.toLowerCase(${entity.name})}'
