@@ -1,0 +1,50 @@
+#set($dollar = '$')
+Ext.define('${PROJECT_NAME}.view.grid.tbar.gen.${entity.name}ComboGen', {
+    extend: 'Ext.form.field.ComboBox',
+    fieldLabel: '${entity.name} Filter',
+    queryMode: 'remote',
+    displayField: 'name',
+#if(${entity.keyAttributesCount} == 1)
+    valueField: '${entity.keyAttribute.name}',
+#else
+    valueField: 'id${entity.name}',
+#end
+    // extjs default queryParam: 'query'
+    queryParam: 'query',
+    // extjs default displayField: 'text'
+    displayField: 'text',
+    urlSearchApiQueryPath: '/search/findByQuery',
+#set($fkKeyName= 'id' + ${entity.name})
+#foreach( $field in $entity.nonKeyAttributes )
+#if($field.isFK() && ${field.referencedEntity.keyAttributesCount} == 1 )
+#set($fkKeyName= ${entity.keyAttribute.name})
+#end
+#end
+    urlSearchApiPath: '/search/findBy${entity.name}_$fn.capitalize(${fkKeyName})',
+    store: {
+        type: '${fn.toLowerCase(${entity.name})}'
+    },
+    gridStoreReload: function (${fkKeyName}) {
+        let gridStore = this.findParentByType("grid").getStore();
+        gridStore.getProxy().setUrl(`${dollar}{TelosysGen.Vars.baseStoreProxyUrl}${dollar}{gridStore.urlApiPath}${dollar}{this.urlSearchApiPath}`);
+        gridStore.getProxy().setExtraParams({
+            ${fkKeyName}: ${fkKeyName}
+        });
+        gridStore.reload();
+    },
+    comboBeforeQuery: function (queryPlan) {
+        if (queryPlan.query === "") {
+            queryPlan.combo.getStore().getProxy().setUrl(`${dollar}{TelosysGen.Vars.baseStoreProxyUrl}/${fn.toLowerCase(${entity.name})}s`);
+        } else {
+            queryPlan.combo.getStore().getProxy().setUrl(`${dollar}{TelosysGen.Vars.baseStoreProxyUrl}/${fn.toLowerCase(${entity.name})}s${dollar}{this.urlSearchApiQueryPath}`);
+        }
+    },
+    listeners: {
+        select: function (combo, record) {
+        this.gridStoreReload(record.get('${fkKeyName}'));
+        },
+        beforequery: function (queryPlan) {
+            this.comboBeforeQuery(queryPlan);
+        }
+    }
+});
