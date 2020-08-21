@@ -4,6 +4,9 @@ Ext.define('${PROJECT_NAME}.model.gen.${entity.name}Gen', {
     fields: [
 #foreach( $attribute in $entity.nonKeyAttributes )
 #set($jsType = ${attribute.neutralType})
+#if($jsType == 'binary')
+    #set($jsType = 'auto')
+#end
 #if(${attribute.isNumberType()})
     #set($jsType = 'int')
 #end
