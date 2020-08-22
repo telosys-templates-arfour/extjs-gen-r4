@@ -8,7 +8,7 @@ Ext.define('${PROJECT_NAME}.store.gen.${entity.name}Gen', {
     transformWriterM2OFields: function (data) {
 #foreach( $field in $entity.nonKeyAttributes )
 #if($field.isFK() && ${field.referencedEntity.keyAttributesCount} == 1)
-        data.${fn.uncapitalize(${field.referencedEntity.name})} = `/${fn.toLowerCase("${field.referencedEntity.name}")}s/${dollar}{data.${field.referencedEntity.keyAttribute.name}}`;
+        data.${fn.uncapitalize(${field.referencedEntity.name})} = `/${fn.toLowerCase("${field.referencedEntity.name}")}s/${dollar}{data.${field.name}}`;
 #end
 #end
         return data;
